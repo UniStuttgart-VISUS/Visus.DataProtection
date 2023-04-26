@@ -50,7 +50,7 @@ namespace Visus.DataProtection {
                 foreach (var p in properties) {
                     if (p.Type != typeof(string)) {
                         throw new NotSupportedException(
-                            Resources.ErrorNonStringColumn);
+                            Properties.Resources.ErrorNonStringColumn);
 
                     } else {
                         builder.Property<string>(p.Name).HasConversion(

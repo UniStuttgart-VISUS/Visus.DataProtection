@@ -2,6 +2,17 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Authors>Christoph Müller</Authors>
+    <Company>Visualisierunginstitut der Universität Stuttgart</Company>
+    <Product>Per-Column Encryption for Entity Framework Core</Product>
+    <Description>This library implements middleware for adding per-column encryption of databases in Entity Framework Core.</Description>
+    <Copyright>Copyright © 2021 - 2023 Visualisierungsinstitut der Universität Stuttgart. Alle Rechte vorbehalten.</Copyright>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/UniStuttgart-VISUS/Visus.DataProtection</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/UniStuttgart-VISUS/Visus.DataProtection</RepositoryUrl>
+    <PackageTags>entityframework encryption</PackageTags>
+    <NeutralLanguage>en</NeutralLanguage>
   </PropertyGroup>
 
   <ItemGroup>
@@ -10,7 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Resources.Designer.cs">
+    <Compile Update="Properties\Resources.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
@@ -18,7 +29,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Update="Resources.resx">
+    <EmbeddedResource Update="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
