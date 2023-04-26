@@ -3,6 +3,7 @@
 // </copyright>
 // <author>Christoph Müller</author>
 
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
 using System.Linq;
@@ -23,7 +24,7 @@ namespace Visus.DataProtection {
         /// protection to</typeparam>
         /// <param name="builder">The type builder used to add the data
         /// protection configuration to.</param>
-        /// <param name="dataProjection">The data protection configuration to be
+        /// <param name="dataProtection">The data protection configuration to be
         /// added to the entity. This instance specifies the crypto keys used to
         /// protect the annotated columns.</param>
         /// <returns><paramref name="builder"/>.</returns>
@@ -62,5 +63,30 @@ namespace Visus.DataProtection {
 
             return builder;
         }
+
+        /// <summary>
+        /// Retrieves the <see cref="EntityTypeBuilder{TEntity}"/> from
+        /// <paramref name="builder"/> and adds data projection to the
+        /// specified entity <typeparamref name="TEntity"/>.
+        /// </summary>
+        /// <typeparam name="TEntity">The type of the entity to add data
+        /// protection to</typeparam>
+        /// <param name="builder">The model builder used to add the data
+        /// protection configuration to.</param>
+        /// <param name="dataProtection">The data protection configuration to be
+        /// added to the entity. This instance specifies the crypto keys used to
+        /// protect the annotated columns.</param>
+        /// <returns><paramref name="builder"/>.</returns>
+        /// <exception cref="ArgumentNullException">If any of the parameters is
+        /// <c>null</c>.</exception>
+        public static ModelBuilder AddDataProtection<TEntity>(
+                this ModelBuilder builder,
+                DataProtectionConfiguration dataProtection)
+                where TEntity : class {
+            _ = builder ?? throw new ArgumentNullException(nameof(builder));
+            builder.Entity<TEntity>(b => b.AddDataProtection(dataProtection));
+            return builder;
+        }
+
     }
 }
