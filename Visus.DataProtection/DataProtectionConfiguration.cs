@@ -22,7 +22,7 @@ namespace Visus.DataProtection {
     /// settings, but it also implements the crypto itself, which can be
     /// added to the data context via <see cref="EntityBuilderExtensions"/>.
     /// </remarks>
-    public class DataProtection {
+    public class DataProtectionConfiguration {
 
         #region Public class methods
         /// <summary>

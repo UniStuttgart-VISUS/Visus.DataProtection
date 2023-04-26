@@ -31,7 +31,7 @@ namespace Visus.DataProtection {
         /// <c>null</c>.</exception>
         public static EntityTypeBuilder<TEntity> AddDataProtection<TEntity>(
                 this EntityTypeBuilder<TEntity> builder,
-                DataProtection dataProtection)
+                DataProtectionConfiguration dataProtection)
                 where TEntity : class {
             _ = builder ?? throw new ArgumentNullException(nameof(builder));
             _ = dataProtection ?? throw new ArgumentNullException(
