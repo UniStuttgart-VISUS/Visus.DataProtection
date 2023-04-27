@@ -56,6 +56,10 @@ namespace Visus.DataProtection {
         /// <para>If this is <c>null</c>, the implementation will derive a
         /// random IV each time and embed it into the data like the salt in
         /// Unix crypt.</para>
+        /// <para>You cannot change this property if the database is already
+        /// in production and the implementation has written random IVs to
+        /// the table. If this string is <c>null</c> or empty, the
+        /// implementation uses this as the trigger to use random IVs.</para>
         /// </remarks>
         public string InitialisationVector { get; set; }
 
