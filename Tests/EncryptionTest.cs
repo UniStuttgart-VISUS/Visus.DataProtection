@@ -24,6 +24,18 @@ namespace Crypto {
         }
 
         [TestMethod]
+        public void GlobalIvOverride() {
+            var config = new DataProtectionConfiguration();
+            config.DatabaseKey = "356tjk2l3rt2p6erfwerg254t";
+            config.InitialisationVector = "q4tq3rgwefgwrgwreg";
+
+            var expected = "Das ist ein Test";
+            var encrypted = config.Protect(expected);
+            var actual = config.Unprotect(encrypted);
+            Assert.AreEqual(expected, actual, "Encryption round trip with global IV.");
+        }
+
+        [TestMethod]
         public void IvOverride() {
             var config = new DataProtectionConfiguration();
             config.DatabaseKey = "356tjk2l3rt2p6erfwerg254t";

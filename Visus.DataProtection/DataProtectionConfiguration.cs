@@ -48,6 +48,18 @@ namespace Visus.DataProtection {
         public string DatabaseKey { get; set; }
 
         /// <summary>
+        /// Gets or sets the global initialisation vector used for AES.
+        /// </summary>
+        /// <remarks>
+        /// <para>The actual IV will be derived using a PKDF and 
+        /// <see cref="Iterations"/>.</para>
+        /// <para>If this is <c>null</c>, the implementation will derive a
+        /// random IV each time and embed it into the data like the salt in
+        /// Unix crypt.</para>
+        /// </remarks>
+        public string InitialisationVector { get; set; }
+
+        /// <summary>
         /// Gets or sets the number of iterations performed during key
         /// derivation.
         /// </summary>
@@ -100,15 +112,18 @@ namespace Visus.DataProtection {
                 using var aes = this.GetEncryptionAlgorithm();
                 using var ms = new MemoryStream();
 
-                if (!string.IsNullOrWhiteSpace(ivOverride)) {
+                if (!string.IsNullOrEmpty(ivOverride)) {
                     // Use the specified string to generate the IV.
-                    this.OverrideIV(aes, ivOverride);
+                    this.SetIV(aes, ivOverride);
+
+                } else if (!string.IsNullOrEmpty(this.InitialisationVector)) {
+                    // Use global user-defined string for the IV.
+                    this.SetIV(aes, this.InitialisationVector);
 
                 } else {
-                    // Add IV to the output as we need that for decrypting. This
-                    // solution is semi-hot, but the alternative would have been
-                    // using the same IV for everything and hard code it in the
-                    // software, which would be even more unsafe.
+                    // Add IV that the AES has generated for us to the output
+                    // as we need that for decrypting. This solution is
+                    // semi-hot ...
                     ms.Write(aes.IV, 0, aes.IV.Length);
                 }
 
@@ -138,17 +153,17 @@ namespace Visus.DataProtection {
                 using var aes = this.GetEncryptionAlgorithm();
                 using var ms = new MemoryStream(Convert.FromBase64String(value));
 
-                if (ivOverride != null) {
+                if (!string.IsNullOrEmpty(ivOverride)) {
                     // Use the user-defined IV.
-                    this.OverrideIV(aes, ivOverride);
+                    this.SetIV(aes, ivOverride);
+
+                } else if (!string.IsNullOrEmpty(this.InitialisationVector)) {
+                    // Use global user-defined IV.
+                    this.SetIV(aes, this.InitialisationVector);
+
                 } else {
-                    // Obtain the IV from the data. Note: The IV property
-                    // returns a f*** deep copy, so we need to read that first
-                    // and then set it, because otherwise, we would copy the IV
-                    // into a temporary buffer that is never used.
-                    var iv = new byte[aes.IV.Length];
-                    ms.Read(iv);
-                    aes.IV = iv;
+                    // Obtain the IV from the start of the data.
+                    this.SetIV(aes, ms);
                 }
 
                 // Encrypt the data.
@@ -164,7 +179,7 @@ namespace Visus.DataProtection {
         #endregion
 
         #region Private methods
-        private void OverrideIV(Aes aes, string iv) {
+        private void SetIV(Aes aes, string iv) {
             Contract.Assert(iv != null);
             aes.IV = KeyDerivation.Pbkdf2(
                 iv,
@@ -172,6 +187,17 @@ namespace Visus.DataProtection {
                 KeyDerivationPrf.HMACSHA512,
                 this.Iterations,
                 aes.IV.Length);
+        }
+
+        private void SetIV(Aes aes, MemoryStream stream) {
+            // Obtain the IV from the given stream. Note: The IV property
+            // returns a f*** deep copy, so we need to read that first
+            // and then set it instead of writing into the array we get from
+            // a property get, because otherwise, we would copy the IV into a
+            // temporary buffer that is never used.
+            var iv = new byte[aes.IV.Length];
+            stream.Read(iv);
+            aes.IV = iv;
         }
         #endregion
     }
