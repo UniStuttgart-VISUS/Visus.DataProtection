@@ -68,17 +68,6 @@ namespace Visus.DataProtection {
         /// derivation.
         /// </summary>
         public int Iterations { get; set; } = 10000;
-
-        /// <summary>
-        /// Gets or sets the directory where the encryption keys should be
-        /// persisted.
-        /// </summary>
-        /// <remarks>
-        /// If not specified (<c>null</c>), the default mechanism for the
-        /// platform will be used, which might be an in-memory storage that
-        /// could make sessions to work incorrectly.
-        /// </remarks>
-        public string KeyStorage { get; set; }
         #endregion
 
         #region Public methods
