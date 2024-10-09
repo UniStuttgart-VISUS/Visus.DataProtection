@@ -51,9 +51,9 @@ public sealed class MyEntity {
     [Protected]
     public string Secret { get; set; }
 
-    [Column(Order = 1)]
+    [Column(Order = 2)]
     [Protected(Searchable = "ADFKJ$asdjb234134m.djn34änds/(gsd")]
-    public string Secret { get; set; }
+    public string Searchable { get; set; }
 }
 ```
 
