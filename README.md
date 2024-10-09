@@ -1,4 +1,5 @@
 # Visus.DataProtection
+[![Visus.DataProtection](https://img.shields.io/nuget/v/Visus.DataProtection.svg)](https://www.nuget.org/packages/Visus.DataProtection)
 
 A library that adds per-column encryption (for string columns) to Entity Framework Core.
 
