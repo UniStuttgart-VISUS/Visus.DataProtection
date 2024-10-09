@@ -1,5 +1,6 @@
-﻿// <copyright file="DataProtection.cs" company="Visualisierungsinstitut der Universität Stuttgart">
-// Copyright © 2023 Visualisierungsinstitut der Universität Stuttgart. Alle Rechte vorbehalten.
+﻿// <copyright file="DataProtectionConfiguration.cs" company="Visualisierungsinstitut der Universität Stuttgart">
+// Copyright © 2023 - 2024 Visualisierungsinstitut der Universität Stuttgart.
+// Licensed under the MIT licence. See LICENCE file for details.
 // </copyright>
 // <author>Christoph Müller</author>
 
@@ -23,6 +24,13 @@ namespace Visus.DataProtection {
     /// added to the data context via <see cref="EntityBuilderExtensions"/>.
     /// </remarks>
     public class DataProtectionConfiguration {
+
+        #region Public constants
+        /// <summary>
+        /// The recommended name of the configuration section in appsettings.
+        /// </summary>
+        public const string Section = "DataProtection";
+        #endregion
 
         #region Public class methods
         /// <summary>
